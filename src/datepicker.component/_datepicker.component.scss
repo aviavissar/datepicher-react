@@ -1,0 +1,191 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+@font-face {
+  font-family: almoni-400;
+  src: url(".././fonts/almoni-dl-aaa-400.eot");
+  src: url(".././fonts/almoni-dl-aaa-400.woff") format("woff"), url(".././fonts/almoni-dl-aaa-400.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: almoni-700;
+  src: url("../fonts/almoni-dl-aaa-700.eot");
+  src: url("../fonts/almoni-dl-aaa-700.woff") format("woff"), url("../fonts/almoni-dl-aaa-700.ttf") format("ttf");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  font-family: "Courier New", Courier, monospace;
+}
+.pickerWrap {
+  padding: 10px 7px 8px 10px;
+  display: flex;
+  flex-direction: column;
+
+  width: 320px;
+  margin: 50px auto;
+  border: 1px solid #c2c2c2;
+  -webkit-box-shadow: 0px 0px 2px 4px #c2c2c200, 0px 0px 6px 1px #c2c2c2, 0px 0px 4px 4px rgba(221, 221, 221, 0);
+  box-shadow: 0px 0px 2px 4px #c2c2c200, 0px 0px 6px 1px #c2c2c2, 0px 0px 4px 4px rgba(221, 221, 221, 0);
+}
+
+.innerwrap {
+  display: flex;
+  flex-direction: column;
+  padding: 11px 18px 0px 18px;
+}
+.bt {
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 34px;
+  border-radius: 3px;
+  padding: 8px 0px;
+  height: 32px;
+  margin: 0 10px;
+}
+
+.bt-right {
+  position: relative;
+  margin-right: 8px;
+}
+
+.bt-left {
+  margin-left: 0px;
+}
+
+:disabled {
+  border-color: #f0f0f0;
+}
+:disabled .arrow {
+  fill: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+div.close {
+  text-align: left;
+}
+
+.close {
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  color: #9e9e9e;
+  font-family: "Lithos Pro", sans-serif;
+}
+.monthsdiv {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+h1 {
+  text-align: center;
+  font-size: 19px;
+  color: #636365;
+  font-family: "almoni-700", sans-serif;
+  margin-bottom: 5px;
+}
+
+.grid-item {
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  margin: 2px;
+  color: #aebed8;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.day-title {
+  font-family: "almoni-400", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #656262;
+  margin-bottom: 20px;
+}
+
+#mySelect {
+  border: none;
+  border-bottom: 1px solid #dde7f7;
+  width: 149px;
+  direction: rtl;
+  font-size: 15px;
+  font-family: "almoni-700", sans-serif;
+  line-height: 100%;
+  padding-top: 2px;
+  color: #687073;
+}
+
+#mySelect option {
+  padding: 13px 2px;
+  height: 50px;
+}
+
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  padding: 17px 13px 10px 8px;
+}
+.mikra {
+  font-family: "almoni-700", sans-serif;
+  font-size: 12px;
+  margin: 10px;
+  color: #687073;
+}
+
+.my-circle {
+  font-size: 16px;
+  margin: 3px 0 0 11px;
+  position: relative;
+  top: 2px;
+}
+.pink {
+  color: #f9eaf1;
+}
+.blue {
+  color: #c9dee0;
+}
+li {
+  margin: 0 0 0 0;
+}
+
+.arrow {
+  width: 15px;
+  height: 15px;
+  fill: #525151;
+}
+
+.arrow-negative {
+  @extend .arrow;
+  transform: rotate(180deg);
+}
+button > * {
+  pointer-events: none;
+}
+.daybt {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  text-align: center;
+  color: #d0d0d0;
+}
+
+.daycircle {
+  color: #51847d;
+  background: #dde9ea;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+}
+.daycircle:hover,
+.activebt {
+  color: white;
+  background: #51847d;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  border: none;
+}

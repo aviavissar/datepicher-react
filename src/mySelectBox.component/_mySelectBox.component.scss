@@ -1,0 +1,128 @@
+*{
+    box-sizing: border-box;
+}
+
+
+@font-face {
+    font-family: almoni-400;
+    src: url(".././fonts/almoni-dl-aaa-400.eot");
+    src: url(".././fonts/almoni-dl-aaa-400.woff") format("woff"), url(".././fonts/almoni-dl-aaa-400.ttf") format("ttf");
+  }
+  
+  @font-face {
+    font-family: almoni-700;
+    src: url("../fonts/almoni-dl-aaa-700.eot");
+    src: url("../fonts/almoni-dl-aaa-700.woff") format("woff"), url("../fonts/almoni-dl-aaa-700.ttf") format("ttf");
+  }
+  
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    border:1px solid #c1c1c1;
+    padding:0 12px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    
+   padding:0 12px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1; 
+    border-radius: 30%;
+   
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+.select-box--selected-item{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 4px 12px;
+    vertical-align: middle
+}
+.select-box--box{
+    width: 156px;
+    position: absolute;
+    left: 51px;
+    border: 1px solid #f2f2f2;
+    border-radius: 3px;
+    padding-bottom: 0px;
+    
+    background-color: white;
+}
+
+.shedow{
+    -webkit-box-shadow: 0px 9px 7px 0px rgba(195,195,195,1);
+    -moz-box-shadow: 0px 9px 7px 0px rgba(195,195,195,1);
+    box-shadow: 0px 9px 7px 0px rgba(195,195,195,1);
+}
+
+.select-box--items div{
+    height: 33px;
+    padding: 9px 6px 10px 6px;
+}
+
+.select-box--arrow{
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    background: transparent;
+    position: absolute;
+    left: 0;
+    top:0;
+
+}
+
+
+.select-box--arrow-down{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #0e0e0e;
+}
+.select-box--arrow-up{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #0e0e0e;
+}
+.select-box--container{
+    width: 100%;
+    height: 30px;
+    margin: 0;
+    padding-top: 5px;
+    display: inline-block;
+    border-bottom: 1px solid #f2f2f2;
+    font-family: almoni-400 ,sans-serif;
+    font-size: 15px;
+}
+.select-box--items{
+    height: 250px;
+    overflow: auto;
+}
+.select-box--items :hover{
+    background-color: #ecf2f2;
+}
+
+.wrp{
+ width: 500px;padding: 0;
+ margin: 10px auto;
+position: relative;
+}
