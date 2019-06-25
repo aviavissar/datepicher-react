@@ -9,8 +9,8 @@
   "scripts": {
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
-    "start": "webpack-dev-server",
-    "startnode": "node server/server.js",
+    "dev-server": "webpack-dev-server",
+        "start":"node server/server.js",
     "heroku-postbuild": "npm run build:prod"
   },
   "dependencies": {
