@@ -1,6 +1,6 @@
 import React from 'react';
-import { startSetYeras, startSetMonths, handleSetDays, handleSetDate, handleNext_prevBt } from '../actions/pickerActions';
-import { connect } from 'react-redux';
+import { startSetYeras, startSetMonths} from '../actions/pickerActions';
+
 
 class MySelectBox extends React.Component {
     constructor(props) {
@@ -23,11 +23,7 @@ class MySelectBox extends React.Component {
         }))
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-
-        console.log(this.props.thedays)
-        return true
-    }
+    
 
     closeDropDown = () => {
         this.setState(prevState => ({
@@ -93,13 +89,4 @@ class MySelectBox extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
-console.log(state.days)
-    return {
-        thedays: state.days
-    };
-};
-
-
-
-export default connect(mapStateToProps) (MySelectBox);
+export default MySelectBox;
