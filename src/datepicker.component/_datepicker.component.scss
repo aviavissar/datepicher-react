@@ -171,6 +171,7 @@ button > * {
   flex-direction: row;
   text-align: center;
   color: #d0d0d0;
+  border: none;
 }
 
 .daycircle {
@@ -179,7 +180,9 @@ button > * {
   border-radius: 50px;
   width: 30px;
   height: 30px;
+  border: none;
 }
+
 .daycircle:hover,
 .activebt {
   color: white;

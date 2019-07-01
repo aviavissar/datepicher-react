@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { startSetYeras, startSetMonths, handleSetDays, handleSetDate } from '../actions/pickerActions';
+import { startSetYeras, startSetMonths, handleSetDays, handleSetDate, handleNext_prevBt } from '../actions/pickerActions';
 import { connect } from 'react-redux';
 import ArrowIcon from '../assets/icons/arrow';
 import MySelect from '../mySelectBox.component/mySelectBox.component'
@@ -7,6 +7,8 @@ import MySelect from '../mySelectBox.component/mySelectBox.component'
 const PICKER_HEADER = "תאריך יציאה";
 const DAYSֹֹ_ARRAY = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
 const ACTION_TYPE = 'GOING_DATE';
+
+
 class Datepicker extends Component {
     constructor() {
         super();
@@ -21,101 +23,86 @@ class Datepicker extends Component {
             selectedMonth,
             days,
             isDatePickerOpen: true,
-            disabledRight: true,
-            disabledLeft: false,
-            optionState: `${this.date.getFullYear()} ${this.date.getMonth()}`
+            btclass: 'daybt'
         })
-
+        this.flg = true;
         this.dateHandle = this.dateHandle.bind(this);
     }
 
-    handleSelectChange = (item) => {   //update state with the selected year mounth and the days array when we chenge the select 
+
+
+    //update state with the selected year mounth and the days array when we chenge the select 
+    handleSelectChange = (item) => {
         const [year, mounth] = item.split(' ');
         const [selectedYear, selectedMonth, ...days] = handleSetDays(Number(year), Number(mounth))
+
         this.setState({
             days: days,
             selectedYear: Number(year),
-            selectedMonth: Number(mounth),
+            selectedMonth: Number(mounth)
         })
     }
 
+
+    //close the datepicker
     onClose = () => {
         this.setState({ isDatePickerOpen: false })
     }
 
-    handleBt = (one, e) => {  //מטפלת בכפתורי החצים ובתאום שלהם מול תיבת הסלקט
-        let year = this.state.selectedYear
-        let month = this.state.selectedMonth;
 
-        if (this.date.getMonth() == month && this.date.getFullYear() == year && one == -1) {
-            
-            //הגענו לקצה התאריכים המוגדר
-            this.setState({ disabledRight: true })
-            return;
-        }
-        else if (this.state.months[this.state.months.length - 1] == this.state.months[month] &&
-            this.state.years[this.state.years.length - 1] == year && one == 1) {
-            this.setState({ disabledLeft: true })
-            //הגענו לקצה התאריכים המוגדר
-            return;
-        }
-        else if (month === 0 && one === -1) {
-            year--;
-            month = month + 11
-        }
-        else if (month === 11 && one === 1) {
-            year++;
-            month = month - 11
-        } else if (one === -1) {
-            month--
-        }
-        else if (one === 1) {
-            month++
-        }
 
-        if (e.target.id == "rightBt") {  //פותח את הדיסאבל שלוחצים על כפתור נגדי
-            this.setState({ disabledLeft: false });
-        } else if (e.target.id == "leftBt") {
-            this.setState({ disabledRight: false })
-        }
-        const [selectedYear, selectedMonth, ...days] = handleSetDays(Number(year), Number(month))
+    //handle the prev/next buttons and coordination with the selext box
+    handleBt = (oneMonthDirection) => {
+
+        const { year, month } = // retrun the prev/next month
+            handleNext_prevBt(this.state.selectedYear, this.state.selectedMonth, oneMonthDirection);
+
+        handleSetDays(Number(year), Number(month));//brings the days
         this.setState({
-            days: days,
-            selectedYear: selectedYear,
-            selectedMonth: selectedMonth,
-            optionState: `${selectedYear} ${selectedMonth}`
+            selectedMonth: month,
+            selectedYear: year
         })
-        
-      this.refs.child.selectItem(year + " " + month, this.state.months[month] + " " + year)//to move the select
+        this.handleSelectChange(year + " " + month)
     }
 
-    dateHandle = (possibleGoing, e) => {
+
+
+    //saving on redux
+    dateHandle = (possibleGoing, day) => {
         let message;
         if (possibleGoing) {
-            //saving on redux just for optionly use from another components tree
-            handleSetDate(this.state.selectedYear, this.state.selectedMonth, e.target.value, this.actionType);
-
-            const date = new Date();
-            date.setFullYear(this.state.selectedYear);
-            date.setMonth(this.state.selectedMonth);
-            date.setDate(e.target.value);
-            message = String(date)
+            this.flg = false;
+            let objpic = handleSetDate(this.state.selectedYear, this.state.selectedMonth, day, this.actionType); //saving on redux
+            this.picday = objpic.day;
+            this.pickedmonth = objpic.month;
+            this.pickedyear = objpic.year;
+            this.setState({
+                btclass: this.setTheCssClass(possibleGoing, day)
+            });
+            message = objpic.date.toString();
         }
         else {
             message = 'you can chose only mark';
         }
 
-        for (var key in this.refs) {
-            if (this.refs[key].className == "activebt") {
-                console.log(this.refs[key].className = "daycircle daybt");
-            }
-        }
-        if (  e.target.className == "daycircle daybt") {
-            e.target.className = "activebt";
-        }
-
-        this.props.onOperationDone(message); {/* A JSX comment */ } //send message to father component
+        this.props.onOperationDone(message);  //send message to father component
     }
+
+
+    //give the day his proper class
+    setTheCssClass = (possibleGoing, day) => {
+        let theClassName = 'daybt'
+        if (
+            possibleGoing && day === this.picday &&
+            this.state.selectedYear === this.pickedyear && this.state.selectedMonth === this.pickedmonth) {
+            theClassName = theClassName + " activebt daycircle";
+        }
+        else if (possibleGoing && day > 0) {
+            theClassName = theClassName + " daycircle"
+        }
+        return theClassName
+    }
+
 
 
     render() {
@@ -130,21 +117,25 @@ class Datepicker extends Component {
                     <h1>{this.pickerheader}</h1>  {/* //var to select a header for the picker */}
 
                     <div className="monthsdiv">
-                        <button className={this.disabledRight?"bt bt-right disablebt" :"bt bt-right" }id="rightBt" disabled={this.state.disabledRight}
-                            onClick={(e) => this.handleBt(-1, e)}>
+                        <button className={this.disabledRight ? "bt bt-right disablebt" : "bt bt-right"} id="rightBt"
+                            disabled={this.date.getMonth() == this.state.selectedMonth &&
+                                this.date.getFullYear() == this.state.selectedYear ? true : false}
+                            onClick={() => this.handleBt(-1)}>
                             <ArrowIcon id="rightBt" className="arrow" /> {/*svg component */}
                         </button>
 
-                        <MySelect ref="child" id="mySelect" 
-                        years={this.state.years}
-                         months={this.state.months} 
-                         optionState={this.state.optionState} 
-                         onChange={this.handleSelectChange}>
+                        <MySelect ref={this.child} id="mySelect"
+                            years={this.state.selectedYear}
+                            months={this.state.selectedMonth}
+                            optionState={this.state.months[this.state.selectedMonth] + " " + this.state.selectedYear}
+                            onChange={this.handleSelectChange}>
 
                         </MySelect>
 
-                        <button className={this.disabledLeft?"bt bt-left disablebt" :"bt bt-left" } id="leftBt" disabled={this.state.disabledLeft}
-                            onClick={(e) => this.handleBt(1, e)}>
+                        <button className={this.disabledLeft ? "bt bt-left disablebt" : "bt bt-left"} id="leftBt"
+                            disabled={this.state.months.length - 1 == this.state.selectedMonth &&
+                                this.state.years[this.state.years.length - 1] == this.state.selectedYear}
+                            onClick={() => this.handleBt(1)}>
                             <ArrowIcon id="leftBt" className="arrow-negative" />
                         </button>
                     </div>
@@ -161,10 +152,11 @@ class Datepicker extends Component {
 
                                 return (
                                     <div key={day + "dayd" + indx} className="grid-item">
-                                        <button onClick={(e) => this.dateHandle(possibleGoing, e)}
-                                            id={day} value={day} ref={"ref" + day}
+                                        <button onClick={(e) => this.dateHandle(possibleGoing, day)}
+                                            id={day} value={day}
                                             // put daycircle class if possibleGoing
-                                            className={possibleGoing && day > 0 ? "daycircle daybt" : "daybt"}>
+                                            className={this.flg ? (possibleGoing && day > 0 ? "daycircle " + this.state.btclass : this.state.btclass) : this.setTheCssClass(possibleGoing, day)}>
+
                                             {day === 0 ? "" : day}
                                         </button>
                                     </div>
@@ -189,7 +181,8 @@ class Datepicker extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
     days: (year, month) => dispatch(handleSetDays(year, month)),  //retrun days array
-    chosenDate: (year, month, day, type) => dispatch(handleSetDate(year, month, day, type)),
+    next_prevDays: (year, month, oneMonthDirection) => dispatch(handleNext_prevBt(year, month, oneMonthDirection)),  //retrun next/prev days array
+    chosenDate: (year, month, day, theAction) => dispatch(handleSetDate(year, month, day, theAction)),
 });
 
-export default connect(null, mapDispatchToProps)(Datepicker);
+export default connect(undefined, mapDispatchToProps)(Datepicker);
