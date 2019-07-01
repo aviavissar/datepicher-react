@@ -57,12 +57,7 @@ export const handleSetDays = (year, month) => {
 //button logic
 export const handleNext_prevBt = (year, month, oneMonthDirection) => {
 
-  if (date.getMonth() == month && date.getFullYear() == year && oneMonthDirection == -1 ||   //The beginning of dates
-    months.length - 1 == month && years[years.length - 1] == year && oneMonthDirection == 1)  //The ends of dates
-  {
-    return;
-  }
-  else if (month === 0 && oneMonthDirection === -1) {//Breaks on the yars
+   if (month === 0 && oneMonthDirection === -1) {//Breaks on the yars
     year--;
     month = month + 11
   }
@@ -74,7 +69,7 @@ export const handleNext_prevBt = (year, month, oneMonthDirection) => {
   else if (oneMonthDirection === -1) {
     month--
   }
-  else if (oneMonthDirection === 1) {
+  else {
     month++
   }
   return { year, month };
@@ -83,7 +78,6 @@ export const handleNext_prevBt = (year, month, oneMonthDirection) => {
 
 
 //handlig the selected date
-
 export const handleSetDate = (year, month, day, theAction) => {  //makink js date obj as required
   const date = new Date();
   date.setFullYear(year);
@@ -95,7 +89,6 @@ export const handleSetDate = (year, month, day, theAction) => {  //makink js dat
 
 
 //save the date and the type is to usee defrents date
-
 export const SetDate = (theAction, day, month, year, date) => ({
   type:'SET_DATE',
   theAction,
