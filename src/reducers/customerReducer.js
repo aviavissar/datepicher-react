@@ -4,12 +4,18 @@ export default (state = {}, action) => {
         //     return{
         //         name: action.name, uid:action.uid
         //     }
-        case 'GOING_DATE':
-            return { ...state, going: action.date }
+        case 'SET_DATE':
+         
+            return{ 
+               ...state,
+               theAction: action.theAction,
+                 goingDay: action.day,
+                 goingMonth: action.month,
+                 goingyear: action.year,
+                 goingDate: action.date,
+                }
 
-        case 'RETURNING_DATE':
-            return { ...state, returning: action.date }
-
+       
         default:
             return state;
     }
