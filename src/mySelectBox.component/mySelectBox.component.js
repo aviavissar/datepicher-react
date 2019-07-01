@@ -1,4 +1,6 @@
 import React from 'react';
+import { startSetYeras, startSetMonths, handleSetDays, handleSetDate, handleNext_prevBt } from '../actions/pickerActions';
+import { connect } from 'react-redux';
 
 class MySelectBox extends React.Component {
     constructor(props) {
@@ -6,17 +8,25 @@ class MySelectBox extends React.Component {
         this.date = new Date();
         this.state = ({
             ...this.props,
-            years: this.props.years || [],
-            months: this.props.months || [],
+            months: startSetMonths(),
+            years: startSetYeras(),
             showItems: false,
-            selectedItem: this.props.months[this.date.getMonth()] + " " + this.date.getFullYear()
+            days: this.props.days,
+            selectedItem: this.props.optionState
         })
     }
+
 
     dropDown = () => {
         this.setState(prevState => ({
             showItems: !prevState.showItems
         }))
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+
+        console.log(this.props.thedays)
+        return true
     }
 
     closeDropDown = () => {
@@ -31,21 +41,20 @@ class MySelectBox extends React.Component {
             showItems: false,
         })
         this.props.onChange(item)
+
     }
 
 
     render() {
         return (
             <div>
-                <div  className={`${this.state.showItems ? 'select-box--box shedow' : 'select-box--box '}`}>
+                <div className={`${this.state.showItems ? 'select-box--box shedow' : 'select-box--box '}`}>
                     <div className='select-box--container' >
                         <div onClick={this.dropDown}>
                             <div className="select-box--selected-item">
-                                {this.state.selectedItem}
+                                {this.props.optionState}
                             </div>
-                            <div className="select-box--arrow"
-
-                            >
+                            <div className="select-box--arrow">
                                 <span
                                     className={`${this.state.showItems ? 'select-box--arrow-up' : 'select-box--arrow-down'}`}>
                                 </span>
@@ -53,46 +62,44 @@ class MySelectBox extends React.Component {
                         </div>
 
                         <div style={{ display: this.state.showItems ? 'block' : 'none' }}
-                            className="select-box--items"
-                        >
+                            className="select-box--items" >
 
                             {this.state.years.map((year) => { //making the select box
                                 return this.state.months.map((mo, index) => {
-
-                                    return (
-                                        <div key={mo + " " + year}
-                                            className={this.state.selectedItem === mo + " " + year ? 'selected' : ''}
-                                            onClick={() => this.selectItem(year + " " + index, mo + " " + year)}
-                                            selected={(year + " " + index) == this.props.optionState ? 'selected' : false}
-                                            value={year + " " + index}>
-
-                                            {mo + " " + year}
-
-                                        </div>
-
-
-                                    )
+                                    if (Number(year) === this.date.getFullYear() && index < this.date.getMonth()) {
+                                        // debugger
+                                        return;
+                                    }
+                                    else {
+                                        return (
+                                            <div key={mo + " " + year}
+                                                className={this.state.selectedItem === mo + " " + year ? 'selected' : ''}
+                                                onClick={() => this.selectItem(year + " " + index, mo + " " + year)}
+                                                selected={(year + " " + index) == this.props.optionState ? 'selected' : false}
+                                                value={year + " " + index}>
+                                                {mo + " " + year}
+                                            </div>
+                                        )
+                                    }
                                 })
                             })
                             }
-
-
                         </div>
-
-
                     </div>
-
-                    <input type="hidden"
-                        value={this.state.selectedItem.id}
-                        name={this.state.name}
-
-                    />
                 </div>
-
             </div>
-
         )
     }
 }
 
-export default MySelectBox;
+
+const mapStateToProps = (state) => {
+console.log(state.days)
+    return {
+        thedays: state.days
+    };
+};
+
+
+
+export default connect(mapStateToProps) (MySelectBox);
